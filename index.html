@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        section {
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn:hover {
+            background: #ff4757;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        /* Birthday Card Section */
+        #birthdayCard {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        /* Gift Section */
+        #surpriseGift {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            display: none;
+        }
+        
+        .gift-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .gift-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: #f1f2f6;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            cursor: pointer;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .hidden-gift {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 1s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Slideshow Section */
+        #musicSlideshow {
+            background: #000;
+            color: white;
+            display: none;
+        }
+        
+        .slideshow-container {
+            width: 100%;
+            height: 80vh;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            max-width: 100%;
+            max-height: 70%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        
+        .slide-text {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            max-width: 80%;
+        }
+        
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 100;
+        }
+        
+        .music-info {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .controls button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .controls button:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 500px;
+            height: 5px;
+            background: rgba(255,255,255,0.2);
+            margin: 10px auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .progress {
+            height: 100%;
+            background: #ff6b6b;
+            border-radius: 5px;
+            width: 0%;
+        }
+        
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .dot.active {
+            background: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Birthday Card Section -->
+    <section id="birthdayCard">
+        <div class="container">
+            <div class="card" id="card">
+                <h1>🎉 Happy Birthday! 🎉</h1>
+                <p id="birthdayMessage">Your special message will appear here!</p>
+                <button class="btn" id="nextBtn">Reveal Your Surprise Gift!</button>
+                <!-- Confetti elements will be added here by JS -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Surprise Gift Section -->
+    <section id="surpriseGift">
+        <div class="container">
+            <div class="gift-box">
+                <h1>🎁 Your Surprise Gift! 🎁</h1>
+                <p>Click on the gift box to reveal your special surprise!</p>
+                
+                <div class="gift-image" id="giftBox">
+                    🎁
+                </div>
+                
+                <div class="hidden-gift" id="hiddenGift">
+                    <h2>Your Special Gift Is...</h2>
+                    <p id="giftMessage">A custom playlist made just for you!</p>
+                    <button class="btn" id="musicBtn">Enjoy Your Music Slideshow!</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Music Slideshow Section -->
+    <section id="musicSlideshow">
+        <div class="container">
+            <div class="slideshow-container" id="slideshow">
+                <div class="slide active">
+                    <img src="1.jpg" alt="Birthday Image 1">
+                    <div class="slide-text">Happy Birthday to You Nani!</div>
+                </div>
+                <div class="slide">
+                    <img src="2.jpg" alt="Birthday Image 2">
+                    <div class="slide-text">Wishing You a Day Filled with Joy</div>
+                </div>
+                <div class="slide">
+                    <img src="3.jpg" alt="Birthday Image 3">
+                    <div class="slide-text">May All Your Dreams Come True</div>
+                </div>
+                <div class="slide">
+                    <img src="4.jpg" alt="Birthday Image 4">
+                    <div class="slide-text">Celebrating You Today and Always</div>
+                </div>
+                <div class="slide">
+                    <img src="5.jpg" alt="Birthday Image 5">
+                    <div class="slide-text">May Your Heart Be Filled with Love</div>
+                </div>
+                
+                <div class="slide">
+                   <img src="6.jpg" alt="Birthday Image 6">
+                   <div class="slide-text">Wishing You a Birthday as Sweet as You Are!
+                   </div>
+                   
+                   <div class="slide">
+                    <img src="7.jpg" alt="Birthday Image 7">
+                    <div class="slide-text">May Your Day Be Filled with Happiness and Cheer!</div>
+                   </div>
+                </div>  
+            
+            </div>
+
+
+            
+            <div class="nav-dots" id="navDots"></div>
+            
+            <div class="music-player">
+                <div class="music-info">Now Playing: Thousand of Years</div>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="controls">
+                    <button id="prevBtn">Previous</button>
+                    <button id="playBtn">Play</button>
+                    <button id="nextSlideBtn">Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <audio id="music" src="Thousand of years.mp3"></audio>
+
+    <script>
+        // Birthday Card Section
+        const messages = [
+            "Wishing you the happiest of birthdays!",
+            "May your day be filled with joy and laughter.",
+            "You're an amazing person and I'm so grateful to know you!",
+            "Here's to another year of wonderful memories together!",
+            "Hope all your birthday wishes come true!"
+        ];
+        
+        document.getElementById('birthdayMessage').textContent = 
+            messages[Math.floor(Math.random() * messages.length)];
+        
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffa502', '#2ed573', '#1e90ff', '#ff4757', '#ff6348'];
+            const card = document.getElementById('card');
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                
+                card.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.style.opacity = 1;
+                    confetti.style.top = Math.random() * 100 + '%';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.transition = `all ${Math.random() * 3 + 2}s linear`;
+                }, 10);
+            }
+        }
+        
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            createConfetti();
+            setTimeout(() => {
+                document.getElementById('birthdayCard').style.display = 'none';
+                document.getElementById('surpriseGift').style.display = 'flex';
+            }, 2000);
+        });
+        
+        // Gift Section
+        const gifts = [
+            "A virtual hug and all my love!",
+            "A promise to create more memories together!",
+            "A day dedicated just to you!",
+            "All my best wishes for your coming year!",
+            "A heartfelt thank you for being you!"
+        ];
+        
+        document.getElementById('giftBox').addEventListener('click', function() {
+            const hiddenGift = document.getElementById('hiddenGift');
+            const giftBox = document.getElementById('giftBox');
+            
+            giftBox.innerHTML = '🎉';
+            giftBox.style.backgroundColor = '#f8a5c2';
+            
+            hiddenGift.style.display = 'block';
+            
+            document.getElementById('giftMessage').textContent = 
+                gifts[Math.floor(Math.random() * gifts.length)];
+        });
+        
+        document.getElementById('musicBtn').addEventListener('click', function() {
+            document.getElementById('surpriseGift').style.display = 'none';
+            document.getElementById('musicSlideshow').style.display = 'flex';
+            initializeSlideshow();
+        });
+        
+        // Slideshow Section
+        let currentSlide = 0;
+        let slides = [];
+        let slideInterval;
+        
+        function initializeSlideshow() {
+            slides = document.querySelectorAll('.slide');
+            createNavigationDots();
+            showSlide(currentSlide);
+            
+            // Auto-advance slides every 5 seconds
+            slideInterval = setInterval(nextSlide, 5000);
+            
+            // Start music automatically (may be blocked by browser autoplay policies)
+            music.volume = 0.7;
+            music.play().then(() => {
+                document.getElementById('playBtn').textContent = 'Pause';
+            }).catch(error => {
+                console.log("Autoplay was prevented. Please click play to start.");
+            });
+        }
+        
+        function createNavigationDots() {
+            const navDots = document.getElementById('navDots');
+            navDots.innerHTML = '';
+            
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (index === currentSlide) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                });
+                navDots.appendChild(dot);
+            });
+        }
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            const dots = document.querySelectorAll('.dot');
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // Reset timer when manually changing slides
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // Music player functionality
+        const music = document.getElementById('music');
+        const playBtn = document.getElementById('playBtn');
+        const progress = document.getElementById('progress');
+        const progressContainer = document.getElementById('progressContainer');
+        
+        playBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                playBtn.textContent = 'Pause';
+                if (!slideInterval) {
+                    slideInterval = setInterval(nextSlide, 5000);
+                }
+            } else {
+                music.pause();
+                playBtn.textContent = 'Play';
+                clearInterval(slideInterval);
+                slideInterval = null;
+            }
+        });
+        
+        music.addEventListener('timeupdate', () => {
+            const percent = (music.currentTime / music.duration) * 100;
+            progress.style.width = `${percent}%`;
+        });
+        
+        progressContainer.addEventListener('click', (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = music.duration;
+            
+            music.currentTime = (clickX / width) * duration;
+        });
+        
+        // Next/previous buttons
+        document.getElementById('nextSlideBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+        
+        // When music ends
+        music.addEventListener('ended', () => {
+            playBtn.textContent = 'Play';
+            clearInterval(slideInterval);
+            slideInterval = null;
+        });
+    </script>
+</body>
+</html>
